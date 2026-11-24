@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>오아 해외 진출 국가 지도</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Malgun Gothic", "맑은 고딕", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; background: #f4f7f9; color: #1d2b3a; }
+  .page { max-width: 1240px; margin: 0 auto; background: #fff; min-height: 100vh; }
+  header { display: flex; align-items: center; gap: 16px; padding: 22px 28px 12px; border-bottom: 3px solid #e03131; }
+  header img { height: 44px; }
+  header h1 { font-size: 26px; margin: 0; letter-spacing: -0.5px; }
+  header .sub { font-size: 13px; color: #5c6b7a; margin-top: 4px; }
+  header .date { margin-left: auto; font-size: 12px; color: #7b8794; text-align: right; }
+  section { padding: 16px 28px 0; }
+  h2 { font-size: 16px; margin: 4px 0 10px; }
+  .wx-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .wx-head .upd { font-size: 12px; color: #7b8794; }
+  .wx-head button { margin-left: auto; font: inherit; font-size: 12.5px; padding: 5px 12px; border: 1px solid #c3d3de; background: #fff; border-radius: 6px; cursor: pointer; }
+  .wx-head button:hover { background: #f3f6f8; }
+  .cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  @media (max-width: 700px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .card { border: 1px solid #e3e8ec; border-top: 5px solid; border-radius: 8px; padding: 10px 12px; background: #fbfcfd; }
+  .card .city { font-weight: 700; font-size: 14px; }
+  .card .ctry { font-size: 11.5px; color: #7b8794; }
+  .card .temp { font-size: 30px; font-weight: 700; margin: 4px 0 0; letter-spacing: -1px; }
+  .card .cond { font-size: 13px; margin-bottom: 6px; }
+  .card .meta { font-size: 11.5px; color: #52606d; line-height: 1.55; }
+  .card .season { font-size: 11.5px; margin-bottom: 6px; color: #52606d; }
+  .card .badge { display: inline-block; padding: 1px 7px; border-radius: 10px; font-weight: 700; font-size: 11.5px; margin-right: 5px; }
+  .card .badge.wet { background: #d0ebff; color: #1864ab; }
+  .card .badge.dry { background: #f1f3f5; color: #495057; }
+  .card.err .temp { font-size: 14px; color: #b00020; letter-spacing: 0; }
+  main { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 22px; padding: 18px 28px 0; }
+  svg { width: 100%; height: auto; display: block; background: #dcebf5; border-radius: 10px; border: 1px solid #c3d3de; }
+  .land { fill: #f5f2eb; stroke: #b9b3a6; stroke-width: 0.6; }
+  .label { font-size: 17px; font-weight: 700; paint-order: stroke; stroke: #fff; stroke-width: 4px; }
+  .note { font-size: 13px; paint-order: stroke; stroke: #fff; stroke-width: 3px; fill: #33404d; }
+  .dot { stroke: #fff; stroke-width: 2.5; }
+  table { border-collapse: collapse; width: 100%; font-size: 12.5px; }
+  th, td { word-break: keep-all; padding: 7px 8px; border-bottom: 1px solid #e3e8ec; text-align: left; vertical-align: top; }
+  th { background: #f3f6f8; font-size: 12px; white-space: nowrap; }
+  td.c { white-space: nowrap; font-weight: 700; }
+  .sw { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+  .steps { margin: 16px 0 0; padding: 0; list-style: none; font-size: 12.5px; }
+  .steps li { padding: 8px 10px; border-left: 5px solid; background: #f8fafb; margin-bottom: 7px; border-radius: 0 6px 6px 0; line-height: 1.5; }
+  .steps b { font-size: 13px; }
+  .culture { padding-top: 22px; }
+  .culture td { line-height: 1.5; }
+  .culture .scroll { overflow-x: auto; }
+  .culture table { min-width: 720px; }
+  .culture .src { font-size: 11px; color: #7b8794; margin-top: 8px; line-height: 1.6; }
+  .foot { font-size: 11px; color: #7b8794; padding: 14px 28px 24px; line-height: 1.6; }
+  .foot a { color: inherit; }
+  @media (max-width: 900px) {
+    main { grid-template-columns: 1fr; padding: 16px 16px 0; }
+    section, .foot { padding-left: 16px; padding-right: 16px; }
+    header { padding: 16px 16px 10px; }
+    header h1 { font-size: 20px; }
+    header img { height: 34px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+<header>
+  <img src="data:image/png;base64,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" alt="oa">
+  <div>
+    <h1>오아 해외 진출 국가 지도</h1>
+    <div class="sub">쇼피 크로스보더(SLS) 한국 직배송 기준</div>
+  </div>
+  <div class="date">해외영업<br>2026-11-24 작성</div>
+</header>
+
+<section>
+  <div class="wx-head">
+    <h2>실시간 날씨</h2>
+    <span class="upd" id="upd">불러오는 중…</span>
+    <button id="reload" type="button">새로고침</button>
+  </div>
+  <div class="cards" id="cards"></div>
+</section>
+
+<main>
+  <svg id="map" viewBox="0 0 820 875" role="img" aria-label="한국과 동남아 진출 국가 지도"></svg>
+  <aside>
+    <h2>국가별 요약</h2>
+    <table>
+      <tr><th>상태</th><th>나라</th><th>주력 제품(안)</th><th>전압 / 주파수</th><th>한국 플러그</th></tr>
+      <tr><td class="c"><span class="sw" style="background:#2f9e44"></span>진행 중</td><td class="c">싱가포르</td><td>구강세정기</td><td>230V / 50Hz</td><td>변환 필요</td></tr>
+      <tr><td class="c"><span class="sw" style="background:#1c7ed6"></span>검토 중</td><td class="c">말레이시아</td><td>구강세정기, 핸디선풍기</td><td>230V / 50Hz</td><td>변환 필요</td></tr>
+      <tr><td class="c"><span class="sw" style="background:#1c7ed6"></span>검토 중</td><td class="c">필리핀</td><td>핸디선풍기, 전동칫솔</td><td>220~230V / 60Hz</td><td>대부분 변환 필요</td></tr>
+      <tr><td class="c"><span class="sw" style="background:#1c7ed6"></span>검토 중</td><td class="c">태국</td><td>구강세정기, 마사지기</td><td>220~230V / 50Hz</td><td>대부분 호환</td></tr>
+      <tr><td class="c"><span class="sw" style="background:#1c7ed6"></span>검토 중</td><td class="c">베트남</td><td>전동칫솔, 소형 구강세정기</td><td>220V / 50Hz</td><td>대부분 호환</td></tr>
+      <tr><td class="c"><span class="sw" style="background:#868e96"></span>보류</td><td class="c">대만</td><td>BSMI 인증 필요</td><td>110V / 60Hz</td><td>전압 다름</td></tr>
+    </table>
+    <ul class="steps">
+      <li style="border-color:#2f9e44"><b>진행 중 · 싱가포르</b><br>쇼피 입점 후 판매 준비를 진행하고 있습니다.</li>
+      <li style="border-color:#1c7ed6"><b>검토 중 · 말레이시아, 필리핀, 태국, 베트남</b><br>싱가포르 진행 후 순서대로 입점을 검토합니다.</li>
+      <li style="border-color:#868e96"><b>보류 · 대만</b><br>BSMI 인증이 필요해 보류합니다.</li>
+    </ul>
+  </aside>
+</main>
+<section class="culture">
+  <h2>문화·소비 특성</h2>
+  <div class="scroll">
+  <table>
+    <tr><th>나라</th><th>소비 습관</th><th>많이 팔리는 제품</th><th>한국 제품 선호</th></tr>
+    <tr>
+      <td class="c"><span class="sw" style="background:#2f9e44"></span>싱가포르</td>
+      <td>브랜드와 품질에 돈을 쓰는 편입니다. 에어컨을 켠 실내 생활이 많고, 착불 결제 비중은 낮습니다.</td>
+      <td>구강세정기, 전동칫솔(S$89 제품이 1.3만 개 판매), 렌즈세척기, 젖병 살균기</td>
+      <td>한국 브랜드명을 단 렌즈세척기가 1.8만 개 팔린 사례가 있습니다. 가격보다 브랜드 신뢰를 봅니다.</td>
+    </tr>
+    <tr>
+      <td class="c"><span class="sw" style="background:#1c7ed6"></span>말레이시아</td>
+      <td>가격에 민감하지만 브랜드 제품도 팔립니다. 무슬림 인구가 많아 식품·화장품은 할랄 여부가 중요합니다. 틱톡샵이 2위 채널입니다.</td>
+      <td>휴대용·넥밴드 선풍기, 드라이기, 목어깨 마사지기, 휴대용 믹서기</td>
+      <td>한류 콘텐츠 인기가 높다고 알려져 있습니다. 가전에서의 선호는 확인하지 못했습니다.</td>
+    </tr>
+    <tr>
+      <td class="c"><span class="sw" style="background:#1c7ed6"></span>필리핀</td>
+      <td>착불 선호가 약 42%로 동남아에서 가장 높은 편입니다. SNS를 통한 구매 비중이 크고 영어가 통합니다.</td>
+      <td>판매 자료를 아직 조사하지 못했습니다. 더운 기후라 선풍기 수요가 있을 것으로 봅니다.</td>
+      <td>K-드라마와 K-팝 인기가 높다고 알려져 있습니다. 제품 선호는 확인이 필요합니다.</td>
+    </tr>
+    <tr>
+      <td class="c"><span class="sw" style="background:#1c7ed6"></span>태국</td>
+      <td>판매량이 가장 크지만 초저가 중국산과 경쟁합니다. 인플루언서와 방송의 영향이 크고, 틱톡샵 이용률이 51%입니다. 착불이 아직 많다는 자료가 있습니다.</td>
+      <td>휴대용 선풍기(한 상품이 40만 개 판매), 드라이기·무선 고데기, 진드기 침구청소기, 에어펌프(오토바이용)</td>
+      <td>현지에서 인지도가 생긴 제품을 선호합니다. 인플루언서 노출이 중요합니다.</td>
+    </tr>
+    <tr>
+      <td class="c"><span class="sw" style="background:#1c7ed6"></span>베트남</td>
+      <td>쇼피(약 56%)와 틱톡샵(약 41%)이 시장 대부분을 차지합니다. 착불 선호가 약 35%이고 오토바이 생활이 일반적입니다.</td>
+      <td>구강세정기(다섯 나라 중 판매량 최대), 전동칫솔, 드라이기, 목어깨 마사지기</td>
+      <td><b>한국 브랜드 선호가 판매 숫자로 확인됩니다.</b> 락앤락 구강세정기가 4.1만 개 팔렸고 'Made in Korea' 표기 제품이 상위에 있습니다.</td>
+    </tr>
+    <tr>
+      <td class="c"><span class="sw" style="background:#868e96"></span>대만</td>
+      <td>습한 기후 때문에 진드기 청소기를 쓰는 문화가 있습니다. 전압이 110V입니다.</td>
+      <td>진드기 침구청소기, 휴대용 선풍기(여름), 구강세정기</td>
+      <td>한 쇼핑몰의 휴대용 선풍기 판매순 1위가 한국 브랜드였습니다.</td>
+    </tr>
+  </table>
+  </div>
+  <div class="src">※ 판매 수치는 2026-11-24에 라자다·아마존 싱가포르·티키·PChome에서 수집한 누적 판매 표시값입니다. 쇼피 자체 자료와 필리핀 판매 자료는 확인하지 못했습니다. 착불·채널 비중은 공개 보고서 기준이며 자료마다 차이가 있습니다.</div>
+</section>
+<div class="foot">
+  ※ 주력 제품은 계획안입니다. 전압은 공칭 기준이며 자료에 따라 220V와 230V가 섞여 표기됩니다. 나라별 인증 대상 여부는 별도 확인이 필요합니다.<br>
+  ※ 우기 표시는 평년 기후 기준이며, 해마다 시작과 끝이 달라질 수 있습니다.<br>
+  ※ USB-C 충전 제품(어댑터 미포함)은 전압·플러그와 관계없이 사용할 수 있습니다.<br>
+  ※ 날씨는 <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>의 현재 관측·예보 값이며 10분마다 자동으로 갱신됩니다.
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script>
+const C = { "410": "#4a5568", "702": "#2f9e44", "458": "#1c7ed6", "608": "#1c7ed6", "764": "#1c7ed6", "704": "#1c7ed6", "158": "#868e96" };
+// 지도 표시 지점
+const P = [
+  { k: "kr", n: "한국", s: "출발지", lon: 127.8, lat: 36.4, c: "#4a5568", dx: 16, dy: 4 },
+  { k: "tw", n: "대만", s: "보류", lon: 121.0, lat: 23.7, c: "#868e96", dx: 16, dy: 4 },
+  { k: "ph", n: "필리핀", s: "검토 중", lon: 122.6, lat: 12.6, c: "#1c7ed6", dx: 28, dy: 4 },
+  { k: "vn", n: "베트남", s: "검토 중", lon: 108.4, lat: 14.6, c: "#1c7ed6", dx: 24, dy: 4 },
+  { k: "th", n: "태국", s: "검토 중", lon: 101.0, lat: 15.6, c: "#1c7ed6", dx: -16, dy: -30, a: "end" },
+  { k: "my", n: "말레이시아", s: "검토 중", lon: 102.2, lat: 4.3, c: "#1c7ed6", dx: -18, dy: 0, a: "end" },
+  { k: "sg", n: "싱가포르", s: "진행 중", lon: 103.82, lat: 1.35, c: "#2f9e44", dx: 16, dy: 24 }
+];
+// 날씨 조회 도시
+const CITIES = [
+  { k: "sg", city: "싱가포르", ctry: "진행 중", lat: 1.29, lon: 103.85, c: "#2f9e44", wet: [11,12,1], wetTxt: "11~1월" },
+  { k: "my", city: "말레이시아", ctry: "쿠알라룸푸르 · 검토 중", lat: 3.14, lon: 101.69, c: "#1c7ed6", wet: [3,4,10,11,12], wetTxt: "3~4월, 10~12월" },
+  { k: "ph", city: "필리핀", ctry: "마닐라 · 검토 중", lat: 14.60, lon: 120.98, c: "#1c7ed6", wet: [6,7,8,9,10,11], wetTxt: "6~11월" },
+  { k: "th", city: "태국", ctry: "방콕 · 검토 중", lat: 13.75, lon: 100.50, c: "#1c7ed6", wet: [5,6,7,8,9,10], wetTxt: "5~10월" },
+  { k: "vn", city: "베트남 남부", ctry: "호치민 · 검토 중", lat: 10.82, lon: 106.63, c: "#1c7ed6", wet: [5,6,7,8,9,10,11], wetTxt: "5~11월" },
+  { k: "vn2", city: "베트남 북부", ctry: "하노이 · 검토 중", lat: 21.03, lon: 105.85, c: "#1c7ed6", wet: [5,6,7,8,9], wetTxt: "5~9월" },
+  { k: "tw", city: "대만", ctry: "타이베이 · 보류", lat: 25.03, lon: 121.57, c: "#868e96", wet: [5,6,7,8,9], wetTxt: "5~9월" },
+  { k: "kr", city: "한국", ctry: "서울 · 출발지", lat: 37.57, lon: 126.98, c: "#4a5568", wet: [7], wetTxt: "6월 말~7월 장마" }
+];
+const WMO = {
+  0: ["☀️", "맑음"], 1: ["🌤️", "대체로 맑음"], 2: ["⛅", "구름 조금"], 3: ["☁️", "흐림"],
+  45: ["🌫️", "안개"], 48: ["🌫️", "안개"],
+  51: ["🌦️", "약한 이슬비"], 53: ["🌦️", "이슬비"], 55: ["🌦️", "강한 이슬비"], 56: ["🌧️", "어는 이슬비"], 57: ["🌧️", "어는 이슬비"],
+  61: ["🌧️", "약한 비"], 63: ["🌧️", "비"], 65: ["🌧️", "강한 비"], 66: ["🌧️", "어는 비"], 67: ["🌧️", "어는 비"],
+  71: ["❄️", "약한 눈"], 73: ["❄️", "눈"], 75: ["❄️", "강한 눈"], 77: ["❄️", "싸락눈"],
+  80: ["🌦️", "약한 소나기"], 81: ["🌦️", "소나기"], 82: ["⛈️", "강한 소나기"], 85: ["🌨️", "눈 소나기"], 86: ["🌨️", "강한 눈 소나기"],
+  95: ["⛈️", "뇌우"], 96: ["⛈️", "뇌우(우박)"], 99: ["⛈️", "뇌우(우박)"]
+};
+
+// ---------- 지도 ----------
+const svg = d3.select("#map"), W = 820, H = 875;
+const proj = d3.geoMercator().center([113, 20]).scale(1120).translate([W / 2, H / 2]);
+const path = d3.geoPath(proj);
+let noteSel = null;
+const mapReady = d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-50m.json").then(w => {
+  const f = topojson.feature(w, w.objects.countries).features;
+  svg.append("g").selectAll("path").data(f).join("path")
+    .attr("class", "land").attr("d", path)
+    .style("fill", d => C[String(+d.id)] || null)
+    .style("fill-opacity", d => C[String(+d.id)] ? 0.6 : 1);
+  const kr = proj([127.8, 36.4]);
+  svg.append("g").selectAll("path").data(P.slice(1)).join("path")
+    .attr("d", d => { const t = proj([d.lon, d.lat]); const mx = (kr[0] + t[0]) / 2 + 40, my = (kr[1] + t[1]) / 2; return `M${kr[0]},${kr[1]} Q${mx},${my} ${t[0]},${t[1]}`; })
+    .attr("fill", "none").attr("stroke", d => d.c).attr("stroke-width", 1.6).attr("stroke-dasharray", "6 4").attr("opacity", 0.75);
+  const g = svg.append("g").selectAll("g").data(P).join("g").attr("transform", d => `translate(${proj([d.lon, d.lat])})`);
+  g.append("circle").attr("class", "dot").attr("r", 8).attr("fill", d => d.c);
+  g.append("text").attr("class", "label").attr("x", d => d.dx).attr("y", d => d.dy).attr("text-anchor", d => d.a || "start").attr("fill", d => d.c).text(d => d.n);
+  noteSel = g.append("text").attr("class", "note").attr("x", d => d.dx).attr("y", d => d.dy + 18).attr("text-anchor", d => d.a || "start").text(d => d.s);
+}).catch(() => { svg.append("text").attr("x", 20).attr("y", 40).text("지도를 불러오지 못했습니다."); });
+
+// ---------- 날씨 ----------
+const cardsEl = document.getElementById("cards"), updEl = document.getElementById("upd");
+function esc(s) { return String(s).replace(/[&<>"]/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[m])); }
+function skeleton() {
+  cardsEl.innerHTML = CITIES.map(c => `<div class="card" style="border-top-color:${c.c}"><div class="city">${esc(c.city)}</div><div class="ctry">${esc(c.ctry)}</div><div class="temp">–</div><div class="cond">&nbsp;</div><div class="meta">&nbsp;</div></div>`).join("");
+}
+async function loadWeather() {
+  updEl.textContent = "불러오는 중…";
+  const url = "https://api.open-meteo.com/v1/forecast?latitude=" + CITIES.map(c => c.lat).join(",") +
+    "&longitude=" + CITIES.map(c => c.lon).join(",") +
+    "&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code&timezone=auto";
+  try {
+    const r = await fetch(url, { cache: "no-store" });
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    let data = await r.json();
+    if (!Array.isArray(data)) data = [data];
+    const temps = {};
+    cardsEl.innerHTML = CITIES.map((c, i) => {
+      const cur = data[i] && data[i].current;
+      if (!cur) return `<div class="card err" style="border-top-color:${c.c}"><div class="city">${esc(c.city)}</div><div class="ctry">${esc(c.ctry)}</div><div class="temp">자료 없음</div></div>`;
+      const w = WMO[cur.weather_code] || ["", "코드 " + cur.weather_code];
+      const t = Math.round(cur.temperature_2m);
+      temps[c.k] = t;
+      const local = String(cur.time || "").slice(11, 16);
+      const isWet = c.wet.includes(parseInt(String(cur.time || '').slice(5, 7), 10));
+      return `<div class="card" style="border-top-color:${c.c}">
+        <div class="city">${esc(c.city)}</div><div class="ctry">${esc(c.ctry)}</div>
+        <div class="temp">${t}°C</div>
+        <div class="cond">${w[0]} ${esc(w[1])}</div>
+        <div class="season"><span class="badge ${isWet ? "wet" : "dry"}">${isWet ? "☔ 우기" : "우기 아님"}</span>우기 ${esc(c.wetTxt)}</div>
+        <div class="meta">체감 ${Math.round(cur.apparent_temperature)}°C · 습도 ${Math.round(cur.relative_humidity_2m)}%<br>강수 ${cur.precipitation}mm · 현지 ${esc(local)}</div>
+      </div>`;
+    }).join("");
+    await mapReady;
+    if (noteSel) noteSel.text(d => temps[d.k] === undefined ? d.s : (d.s ? `${d.s} · ${temps[d.k]}°C` : `${temps[d.k]}°C`));
+    const now = new Date();
+    updEl.textContent = "마지막 갱신 " + now.toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" }) + " (10분마다 자동 갱신)";
+  } catch (e) {
+    updEl.textContent = "날씨를 불러오지 못했습니다. 잠시 후 새로고침을 눌러 주세요. (" + e.message + ")";
+  }
+}
+skeleton();
+loadWeather();
+setInterval(loadWeather, 10 * 60 * 1000);
+document.getElementById("reload").addEventListener("click", loadWeather);
+</script>
+</body>
+</html>
