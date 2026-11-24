@@ -477,7 +477,7 @@ tbody tr.sel{background:var(--accent-soft)}
   <div class=&quot;foot&quot;>
     <span>싱가포르: 셀러센터에 등록하는 가격은 GST 제외 금액이고, 구매자에게는 등록가 × 1.09가 보여요. 계산기 입력·목표가는 모두 셀러센터 등록가 기준이에요(공식 SG Price Tool과 같은 방식).</span>
     <span>정산식: 상품가(SG는 GST 제외) × (1 − 판매·서비스·트래픽·Spike 수수료) − (판매가 + 구매자 배송비) × 결제수수료 − 히든피 = 쇼피 정산액. 정산액 × (1 − 페이오니아) × 환율 − 원가 − 원화 추가비 − 광고·반품 충당 = 이익. SG는 구매자 배송비 GST도 차감해요.</span>
-    <span>히든피(실제 판매자 부담 해외배송비) = 나라별 공식 SLS 운임표의 청구중량별 금액. 청구중량 = max(실무게, 가로×세로×높이÷6000), 10g 단위 올림. MY Zone A·Standard, PH 공통, VN Zone A1, TH Zone A, TW 택배(宅配), BR Zone A, MX 기본 채널 기준.</span>
+    <span>히든피(실제 판매자 부담 해외배송비) = 나라별 공식 SLS 운임표의 청구중량별 금액. 청구중량 = max(실무게, 가로×세로×높이÷6000), 10g 단위 올림. MY Zone A·Standard, PH 공통, VN Zone A1, TH Zone A, TW 택배(宅配) 기준.</span>
     <span>출처: 쇼피코리아 교육허브 ‘쇼피 수수료 안내’(10624), ‘마켓별 해외 배송비 안내’(20651), ‘트래픽 성장 지원 수수료’(26750), 나라별 Price Tool. 환율은 2026-11-24 시장 환율이며 페이오니아 실제 인출 환율과 달라요.</span>
   </div>
 </div>
@@ -535,7 +535,7 @@ const MK={
 const MKEYS=[&quot;fx&quot;,&quot;gst&quot;,&quot;comm&quot;,&quot;pg&quot;,&quot;traffic&quot;,&quot;svc&quot;,&quot;bs&quot;,&quot;intl&quot;,&quot;spikeRate&quot;,&quot;spikeOn&quot;];
 const GDEF={payo:1.2,dom:2000,pack:0,mgmt:0,customs:0,ads:0,ret:0,div:6000,tMain:40,tClear:30};
 const GKEYS=Object.keys(GDEF);
-const ORDER=[&quot;SG&quot;,&quot;MY&quot;,&quot;PH&quot;,&quot;VN&quot;,&quot;TH&quot;,&quot;TW&quot;,&quot;BR&quot;,&quot;MX&quot;];
+const ORDER=[&quot;SG&quot;,&quot;MY&quot;,&quot;PH&quot;,&quot;VN&quot;,&quot;TH&quot;,&quot;TW&quot;];
 const $=id=>document.getElementById(id);
 let mk=&quot;SG&quot;, channel=&quot;Doorstep&quot;, current=1, over={}, gover={};
 
@@ -707,7 +707,7 @@ function switchMk(k){if(!MK[k])return;mk=k;save();renderMarkets();syncCondInputs
   const s=SKUS[current-1];$(&quot;target&quot;).value=String(+(skuTarget(s,cond(mk))*100).toFixed(2));setDefaultPrice();all()}
 
 function init(){
-  load();
+  load();if(!ORDER.includes(mk))mk=ORDER[0];
   $(&quot;sku&quot;).innerHTML=SKUS.map(s=>`<option value=&quot;${s.no}&quot;>${s.no}. ${s.model} · ${s.color} (${s.type})</option>`).join(&quot;&quot;);
   renderMarkets();syncCondInputs();
   $(&quot;markets&quot;).addEventListener(&quot;click&quot;,e=>{const b=e.target.closest(&quot;button[data-mk]&quot;);if(b)switchMk(b.dataset.mk)});
