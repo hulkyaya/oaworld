@@ -632,7 +632,7 @@ function setDefaultPrice(){
 }
 function render(){
   const c=cond(mk),m=MK[mk];
-  $(&quot;tags&quot;).innerHTML=`<span class=&quot;tag fx&quot;>환율 <b>1 ${m.cur} = ${c.fx.toLocaleString(&quot;ko-KR&quot;,{maximumFractionDigits:5})}원</b><small>${window.fxStamp||&quot;2026-11-24 기준 · 실시간 환율 불러오는 중&quot;}</small></span>${mk===&quot;SG&quot;?`<span class=&quot;tag&quot;>GST <b>${(c.gst*100).toFixed(0)}%</b></span>`:&quot;&quot;}<span class=&quot;tag&quot;>수수료 합 <b>${((c.comm+c.svc+c.traffic+c.spike+c.pg)*100).toFixed(2)}%</b></span><span class=&quot;tag&quot;>구매자 배송비 <b>${loc(c.bs)}</b></span>`;
+  $(&quot;tags&quot;).innerHTML=`<span class=&quot;tag fx&quot;>환율 <b>${c.fx<1?&quot;1,000&quot;:&quot;1&quot;} ${m.cur} = ${Math.round(c.fx<1?c.fx*1000:c.fx).toLocaleString(&quot;ko-KR&quot;)}원</b><small>${window.fxStamp||&quot;2026-11-24 기준 · 실시간 환율 불러오는 중&quot;}</small></span>${mk===&quot;SG&quot;?`<span class=&quot;tag&quot;>GST <b>${(c.gst*100).toFixed(0)}%</b></span>`:&quot;&quot;}<span class=&quot;tag&quot;>수수료 합 <b>${((c.comm+c.svc+c.traffic+c.spike+c.pg)*100).toFixed(2)}%</b></span><span class=&quot;tag&quot;>구매자 배송비 <b>${loc(c.bs)}</b></span>`;
   const kg=num($(&quot;kg&quot;).value),w=num($(&quot;bw&quot;).value),d=num($(&quot;bd&quot;).value),h=num($(&quot;bh&quot;).value);
   const cost=num($(&quot;cost&quot;).value),reg=num($(&quot;price&quot;).value),t=num($(&quot;target&quot;).value)/100;
   const p=mk===&quot;SG&quot;?r2(reg*(1+c.gst)):reg; /* SG: buyer pays registered price + GST */
