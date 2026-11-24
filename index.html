@@ -346,6 +346,7 @@ tbody tr.sel{background:var(--accent-soft)}
 .note{font-size:12px;color:var(--warn);margin:0}
 .foot{font-size:12px;color:var(--muted);display:grid;gap:4px}
 .sechead{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px}
+.tags{align-items:center}.tag.fx{font-size:14px;padding:7px 14px;background:#fff8e1;border:2px solid #f59f00;border-radius:6px;color:#7a4f01}.tag.fx b{font-size:18px;font-weight:700;color:#1a1a1a;margin-left:4px}
 </style>
 
 <div class=&quot;wrap&quot;>
@@ -631,7 +632,7 @@ function setDefaultPrice(){
 }
 function render(){
   const c=cond(mk),m=MK[mk];
-  $(&quot;tags&quot;).innerHTML=`<span class=&quot;tag&quot;>환율 <b>${c.fx.toLocaleString(&quot;ko-KR&quot;,{maximumFractionDigits:5})}</b>원/${m.cur}</span>${mk===&quot;SG&quot;?`<span class=&quot;tag&quot;>GST <b>${(c.gst*100).toFixed(0)}%</b></span>`:&quot;&quot;}<span class=&quot;tag&quot;>수수료 합 <b>${((c.comm+c.svc+c.traffic+c.spike+c.pg)*100).toFixed(2)}%</b></span><span class=&quot;tag&quot;>구매자 배송비 <b>${loc(c.bs)}</b></span>`;
+  $(&quot;tags&quot;).innerHTML=`<span class=&quot;tag fx&quot;>환율 <b>1 ${m.cur} = ${c.fx.toLocaleString(&quot;ko-KR&quot;,{maximumFractionDigits:5})}원</b></span>${mk===&quot;SG&quot;?`<span class=&quot;tag&quot;>GST <b>${(c.gst*100).toFixed(0)}%</b></span>`:&quot;&quot;}<span class=&quot;tag&quot;>수수료 합 <b>${((c.comm+c.svc+c.traffic+c.spike+c.pg)*100).toFixed(2)}%</b></span><span class=&quot;tag&quot;>구매자 배송비 <b>${loc(c.bs)}</b></span>`;
   const kg=num($(&quot;kg&quot;).value),w=num($(&quot;bw&quot;).value),d=num($(&quot;bd&quot;).value),h=num($(&quot;bh&quot;).value);
   const cost=num($(&quot;cost&quot;).value),reg=num($(&quot;price&quot;).value),t=num($(&quot;target&quot;).value)/100;
   const p=mk===&quot;SG&quot;?r2(reg*(1+c.gst)):reg; /* SG: buyer pays registered price + GST */
@@ -874,18 +875,38 @@ const RK_C = [
 let rkCountry = "sg", rkCat = "water_flosser";
 const rkFmt = n => n == null ? "" : Number(n).toLocaleString("en-US", { maximumFractionDigits: 2 });
 function rkEsc(s) { return String(s ?? "").replace(/[&<>"]/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[m])); }
+// 전체 품목: 모든 품목의 상품을 합쳐 판매 많은 순 상위 RK_ALL_N개 (같은 상품 중복 제거, 행 끝에 품목명 추가)
+const RK_ALL_N = 30;
+function rkAll() {
+  const out = {}, keys = new Set();
+  Object.values(RANK.cats).forEach(v => Object.keys(v).forEach(k => { if (Array.isArray(v[k])) keys.add(k); }));
+  keys.forEach(key => {
+    const seen = new Set(), rows = [];
+    Object.values(RANK.cats).forEach(v => (v[key] || []).forEach((r, i) => {
+      const id = r[4] || r[0]; if (seen.has(id)) return; seen.add(id);
+      rows.push({ r: [...r, v.ko], i });
+    }));
+    // PChome은 판매수가 없어 품목별 순위가 높은 것부터, 나머지는 판매(리뷰) 수 큰 순
+    rows.sort((a, b) => key === "pc" ? a.i - b.i : (b.r[3] || 0) - (a.r[3] || 0));
+    out[key] = rows.slice(0, RK_ALL_N).map(x => key === "pc" ? [...x.r, x.i] : x.r);
+  });
+  return out;
+}
 function rkRender() {
-  const c = RK_C.find(x => x.k === rkCountry), d = RANK.cats[rkCat];
+  const all = rkCat === "all";
+  const c = RK_C.find(x => x.k === rkCountry), d = all ? rkAll() : RANK.cats[rkCat];
   document.querySelectorAll("#rk-country .chip").forEach(b => b.classList.toggle("on", b.dataset.k === rkCountry));
-  document.getElementById("rk-oa").innerHTML = `<b>우리 제품</b> · ${rkEsc(RK_OA[rkCat] || "-")}`;
+  document.getElementById("rk-oa").innerHTML = all
+    ? `<b>전체 품목</b> · 모든 품목을 합쳐 판매 많은 순 상위 ${RK_ALL_N}개입니다. 상품 아래에 품목이 표시됩니다. 아마존은 리뷰 수 기준이고, PChome은 판매수가 없어 품목별 순위가 높은 순으로 보여 줍니다.`
+    : `<b>우리 제품</b> · ${rkEsc(RK_OA[rkCat] || "-")}`;
   document.getElementById("rk-grid").innerHTML = c.src.map(([key, title, metric]) => {
     if (key === "sp_x") return `<div class="rk-box"><h3>${rkEsc(title)}</h3><div class="empty">비로그인 접근이 막혀 수집하지 못했습니다. 로그인 계정이나 셀러센터 자료가 있으면 추가할 수 있습니다.</div></div>`;
     const rows = d[key] || [];
     const cur = key === "az" || key === "sp_sg" ? "S$" : c.cur;
     const body = rows.length ? `<ol>${rows.map((r, i) => {
-      const [name, brand, price, val, url, extra] = r;
-      const vtxt = key === "pc" ? `${i + 1}위` : key === "az" ? `리뷰 ${rkFmt(val)}` : `${rkFmt(val)}개`;
-      const sub = [brand, extra && key !== "sp_sg" ? extra : "", key === "az" && extra ? "지난달 " + extra + " 구매" : ""].filter(Boolean).join(" · ");
+      const [name, brand, price, val, url, extra, catKo, pcRank] = r;
+      const vtxt = key === "pc" ? (all ? `품목 ${pcRank + 1}위` : `${i + 1}위`) : key === "az" ? `리뷰 ${rkFmt(val)}` : `${rkFmt(val)}개`;
+      const sub = [all ? "[" + catKo + "]" : "", brand, extra && key !== "sp_sg" && key !== "az" ? extra : "", key === "az" && extra ? "지난달 " + extra + " 구매" : ""].filter(Boolean).join(" · ");
       return `<li><span class="no">${i + 1}</span><div><a href="${rkEsc(url)}" target="_blank" rel="noopener">${rkEsc(name)}</a>${sub ? `<div class="sub2">${rkEsc(sub)}</div>` : ""}</div><div class="v"><b>${rkEsc(vtxt)}</b><span>${price != null ? rkEsc(cur + rkFmt(price)) : ""}</span></div></li>`;
     }).join("")}</ol>` : `<div class="empty">${key === "sp_sg" ? "이 품목은 쇼피 싱가포르 자료가 없습니다." : "품목에 맞는 상품이 검색되지 않았습니다."}</div>`;
     const day = (RANK.meta && RANK.meta[key]) || RANK.asof || "";
@@ -896,7 +917,7 @@ function rkRender() {
   const cg = document.getElementById("rk-country");
   RK_C.forEach(c => { const b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.dataset.k = c.k; b.textContent = c.n; b.onclick = () => { rkCountry = c.k; rkRender(); }; cg.appendChild(b); });
   const sel = document.getElementById("rk-cat");
-  sel.innerHTML = Object.entries(RANK.cats).map(([k, v]) => `<option value="${k}">${rkEsc(v.ko)}</option>`).join("");
+  sel.innerHTML = `<option value="all">전체 품목</option>` + Object.entries(RANK.cats).map(([k, v]) => `<option value="${k}">${rkEsc(v.ko)}</option>`).join("");
   sel.value = rkCat; sel.onchange = () => { rkCat = sel.value; rkRender(); };
   if (RANK.updated) document.getElementById("rk-upd").textContent = `마지막 갱신 ${RANK.updated} · 매일 08:30 자동 갱신 · 품목에 맞는 상품만 판매 많은 순`;
   rkRender();
